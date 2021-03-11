@@ -1,0 +1,34 @@
+{
+  "splash": {
+    "splashContent": "<div> </div>\n\t<div align=\"center\"><br /></div><div align=\"center\"><br /></div><div align=\"center\"><br /></div><div align=\"center\"><br /></div><div align=\"center\"><font size=\"2\"><br /></font></div><div align=\"center\"><font color=\"#48d1cc\" size=\"3\"><b>Registro de Incidencias</b></font></div><div align=\"center\"><span style=\"color: rgb(72, 209, 204);\"><font size=\"3\"><br /></font></span></div><div align=\"center\"><span style=\"color: rgb(72, 209, 204);\"><font size=\"3\">Es una aplicación WebMap de acceso libre, orientado al registro de incidencias </font></span></div>",
+    "requireConfirm": true,
+    "confirm": {
+      "text": "Acepto los términos y las condiciones anteriores",
+      "color": "#2f4f4f",
+      "transparency": 0
+    },
+    "showOption": true,
+    "confirmEverytime": true,
+    "contentVertical": "top",
+    "size": {
+      "mode": "wh",
+      "wh": {
+        "w": 850,
+        "h": 480
+      }
+    },
+    "background": {
+      "mode": "color",
+      "image": null,
+      "type": "fill",
+      "fileName": "No%20se%20ha%20seleccionado%20ning%C3%BAn%20archivo",
+      "color": "#ffffff",
+      "transparency": 0.15
+    },
+    "button": {
+      "color": "#518dca",
+      "transparency": 0,
+      "text": "Aceptar"
+    }
+  }
+}

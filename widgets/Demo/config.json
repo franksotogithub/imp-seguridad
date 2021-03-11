@@ -1,0 +1,11 @@
+{
+	"configText":"abcdefg",
+
+	"listfeatureLayers": [
+		{ "url":"https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/ks_earthquakes_since_2000/FeatureServer/0",
+		  "featureLayer":null,
+		  "title":"Incidencias"	
+		}
+
+	]
+}
