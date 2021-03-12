@@ -18,9 +18,12 @@ define(['dojo/_base/declare', 'jimu/BaseWidget',
 "esri/dijit/editing/TemplatePicker",
 "esri/layers/FeatureLayer",
 'dojo/_base/html',
+"esri/toolbars/draw",
+"esri/graphic",
+"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color"
 
 ],
-function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html) {
+function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphic,SimpleMarkerSymbol,SimpleLineSymbol,Color) {
   //To create a widget, you need to derive from BaseWidget.
   listfeatureLayers:null;
 
@@ -39,6 +42,7 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html) {
       
       console.log('this.config>>',this.config);
       this.listfeatureLayers  = this.config.listfeatureLayers;
+
       this.listfeatureLayers.map((l)=>{
          l.featureLayer = new FeatureLayer(l.url,
           
@@ -50,6 +54,9 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html) {
 
           this.map.addLayers( [l.featureLayer] );
       });
+
+      var drawToolbar = new Draw(this.map);
+
 
       /*
       
@@ -84,11 +91,11 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html) {
         */
 
 
-
+  
 
        var templateLayers =this.listfeatureLayers.map(l=>{return l.featureLayer});
 
-       console.log('templateLayers>>',templateLayers);
+       /*console.log('templateLayers>>',templateLayers);*/
        var templatePicker = new TemplatePicker({
          featureLayers: templateLayers,
          grouping: true,
@@ -100,6 +107,64 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html) {
  
        templatePicker.startup();
 
+       var selectedTemplate;
+       templatePicker.on("selection-change", function() {
+          /*var selected = templatePicker.getSelected();*/
+          if( templatePicker.getSelected() ) {
+            selectedTemplate = templatePicker.getSelected();
+          }
+          switch (selectedTemplate.featureLayer.geometryType) {
+            case "esriGeometryPoint":
+              drawToolbar.activate(Draw.POINT);
+              break;
+            case "esriGeometryPolyline":
+              drawToolbar.activate(Draw.POLYLINE);
+              break;
+            case "esriGeometryPolygon":
+              drawToolbar.activate(Draw.POLYGON);
+              break;
+          }
+
+
+
+
+          /*console.log(selected);*/
+
+          /*var infoDiv = dom.byId("info");
+          if (selected) {
+            infoDiv.innerHTML = selected.template.name;
+          } else {
+            infoDiv.innerHTML = "";
+          }*/
+        });
+
+
+
+       /*{
+          type: "simple-marker",
+          color: [226, 119, 40],  // Orange
+          outline: {
+              color: [255, 255, 255], // White
+              width: 1
+          }
+       };*/
+
+
+       const simpleMarkerSymbol =  new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,10,
+        new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+        new Color([0,255,0,1]), 1),
+        new Color([0,255,0,0.5]));
+
+        drawToolbar.on("draw-end", function(evt) {
+          drawToolbar.deactivate();
+          var newGraphic = new Graphic(evt.geometry, simpleMarkerSymbol, null);
+
+          this.map.graphics.add(newGraphic);
+
+          /*selectedTemplate.featureLayer.applyEdits([newGraphic], null, null);*/
+        });
+
+        
         
 
     },
