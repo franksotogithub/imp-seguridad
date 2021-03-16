@@ -130,7 +130,7 @@
         "closeable": true,
         "id": "widgets_AttributeTable_Widget_27",
         "placeholderIndex": 1,
-        "icon": "/webappbuilder/apps/15/widgets/SmartEditor/images/icon.png?wab_dv=2.18",
+        "icon": "/widgets/SmartEditor/images/icon.png?wab_dv=2.18",
         "name": "SmartEditor",
         "config": "configs/SmartEditor/config_widgets_AttributeTable_Widget_27.json"
       },
@@ -306,7 +306,7 @@
       {
         "name": "Edit",
         "version": "2.18",
-        "icon": "/webappbuilder/apps/15/widgets/Edit/images/icon.png?wab_dv=2.18",
+        "icon": "/widgets/Edit/images/icon.png?wab_dv=2.18",
         "uri": "widgets/Edit/Widget",
         "config": "configs/Edit/config_widgets_Edit_Widget_36.json",
         "index": 4,
@@ -316,7 +316,7 @@
       {
         "name": "Demo",
         "version": "2.18",
-        "icon": "/webappbuilder/apps/15/widgets/Demo/images/icon.png?wab_dv=2.18",
+        "icon": "/widgets/Demo/images/icon.png?wab_dv=2.18",
         "uri": "widgets/Demo/Widget",
         "config": "configs/Demo/config_widgets_Demo_Widget_37.json",
         "index": 6,
@@ -493,7 +493,7 @@
     },
     "loadingGif": {
       "visible": true,
-      "uri": "/webappbuilder/apps/15/configs/loading/images/predefined_loading_2.gif",
+      "uri": "/configs/loading/images/predefined_loading_2.gif",
       "width": 58,
       "height": 10
     }
