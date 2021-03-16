@@ -1,11 +1,10 @@
 {
-	"configText":"abcdefg",
-
-	"listfeatureLayers": [
-		{ "url":"https://siu.imp.gob.pe/arcgis/rest/services/SEGURIDAD/SEGURIDAD/FeatureServer/0",
-		  "featureLayer":null,
-		  "title":"Incidencias"	
-		}
-
-	]
+  "configText": "abcdefg",
+  "listfeatureLayers": [
+    {
+      "url": "https://siu.imp.gob.pe/arcgis/rest/services/SEGURIDAD/SEGURIDAD/FeatureServer/0",
+      "featureLayer": null,
+      "title": "Incidencias"
+    }
+  ]
 }

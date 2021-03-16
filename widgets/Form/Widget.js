@@ -24,36 +24,71 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
 
     baseClass: 'jimu-widget-demo',
 
+    formOptions:[],
 
     createVueApp: function(){
-      Vue.use(Vuelidate.default)
+      Vue.use(Vuelidate.default);
             
             
       const widget = this;
+
+
+      /*this.formOptions=[{
+        attribute:'unidad', typeForm :'select', optionSelect: [ ''] 
+
+
+      }];*/
+
+
+
       this.vue_app = new Vue({
           el: this.domNode.querySelector('[data-id="form"]'),
           data: {
-            form:{
-              titulo:null,
-              descripcion:null,
-              distritos:null,  
-            },
-            
-            datoConsulta:null,
-        },
-validations:{
-  form:{
-    titulo:{
-      required:Validators.required
-    },
-   
-    distritos:{
-      required:Validators.required
-    }
 
-  }
-  
-},
+            step:1,
+            totalsteps:2,
+            form:{
+              unidad:null,
+              tipo_inc:null,
+              sub_tipo_inc:null,   
+              turno: null,             
+              zona: null,
+              distrito:null,
+              nivel_inc:null,
+              fuente: null,
+              usuario: null,
+              contacto:null,
+
+            },
+           
+        },
+
+      validations:{
+        form:{
+          unidad:{
+            required:Validators.required
+          },
+        
+          tipo_inc:{
+            required:Validators.required
+          },
+        
+          sub_tipo_inc:{
+            required:Validators.required
+          },
+        
+          turno:{
+            required:Validators.required
+          },
+        
+          zona:{
+            required:Validators.required
+          }
+
+        }
+        
+      },
+
 
           watch: {
 
@@ -69,8 +104,20 @@ validations:{
                 if(!widget.vue_app.$v.form.$invalid){
                   widget.guardarConsulta(evt);
                 }
+              },
+
+              getOptions(attribute){
+                return  widget.getOptions(attribute);
+              },
+              nextStep(){
+
+                this.step++ ;
+              },
+
+              previousStep(){
+
+                this.step--;
               }
-              
 
           },
 
@@ -90,16 +137,70 @@ validations:{
       });
   },
 
+  getOptions(attribute){
+
+  var options=[
+    {
+      label:'01 SEGURIDAD CIUDADANA',value:'01 SEGURIDAD CIUDADANA',attribute:'unidad'
+    },
+
+    {
+      label:'02 FISCALIZACIÓN',value:'02 FISCALIZACIÓN',attribute:'unidad'
+    },
+
+    {
+      label:'01 ACCIDENTES DE TRÁNSITO',value:'01 ACCIDENTES DE TRÁNSITO',attribute:'tipo_inc'
+    },
+
+    {
+      label:'02 HECHOS CONTRA EL PATRIMONIO',value:'02 HECHOS CONTRA EL PATRIMONIO',attribute:'tipo_inc'
+    },
+
+    {
+      label:'001 ATROPELLO',value:'A',attribute:'sub_tipo_inc'
+    },
+
+    {
+      label:'002 CHOQUE',value:'002 CHOQUE',attribute:'sub_tipo_inc'
+    },
+
+    {
+      label:'Lima Centro 1',value:'Lima Centro 1',attribute:'zona'
+    },
+
+    {
+      label:'Lima Centro 2',value:'Lima Centro 2',attribute:'zona'
+    },
+
+
+    {
+      label:'Mañana',value:'Mañana',attribute:'turno'
+    },
+
+    {
+      label:'Noche',value:'Noche',attribute:'turno'
+    },
+    {
+      label:'Tarde',value:'Tarde',attribute:'turno'
+    },
+    
+  ]
+
+
+  return options.filter(o=>{return o.attribute ===attribute});
+
+
+  },
   
   guardarConsulta:function(evt){
-
+    /*
     PanelManager.getInstance().closePanel(this.id+'_panel');
 
     this.vue_app.datoConsulta.fecha = Date();
 
     const user = JSON.parse(localStorage.getItem('user'));
 
-
+*/
 
     
    /* 
@@ -120,6 +221,7 @@ validations:{
     });*/
     
 
+    /*
     const data = 
     {
       usuarioId:user.id,
@@ -138,7 +240,7 @@ validations:{
 
     const widget  = this;
     
-    this.saveConsultaService(widget);
+    this.saveConsultaService(widget);*/
 
     /*
 
@@ -155,6 +257,9 @@ validations:{
     */
 
   },
+
+
+/*
 
   saveConsultaService(widget){
     const token  = localStorage.getItem('token');
@@ -190,13 +295,7 @@ validations:{
 
             });
           }
-            /*
-            if(widgets.length>0){
-                var widgetId = widgets[0].id;
-                widget.openWidgetById(widgetId).then((widget)=>{
-                  widget.publishData({mensaje:'actualizado'});
-                });
-            }*/
+          
         }  
         
 
@@ -214,26 +313,41 @@ validations:{
 
 
   },
+*/
+
 
 
 
 
     postCreate: function() {
+
+
       this.inherited(arguments);
       this.createVueApp();
-      
 
-      this.vue_app.distritos='holass'; 
-      
 
-      console.log('postCreate');
+
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.display === "block") {
+            panel.style.display = "none";
+          } else {
+            panel.style.display = "block";
+          }
+        });
+      }
     },
 
     startup: function() {
       this.inherited(arguments);
    
       console.log('startup');
-      console.log('this.widgetManager>>>',this.widgetManager);
+      /*console.log('this.widgetManager>>>',this.widgetManager);*/
     },
 
 
@@ -269,7 +383,24 @@ validations:{
 
     onReceiveData: function(name, widgetId, data, historyData) {
 
+      if(name == 'Demo'){
 
+        console.log('data>>>',data);
+        /*console.log('data>>>',data);
+     
+        this.vue_app.datoConsulta =data;
+        this.vue_app.form.distritos = data.distritos;
+        this.vue_app.form.titulo = null;
+        this.vue_app.form.descripcion = null;*/
+
+      }
+
+      else{
+          return;    
+      }
+
+
+/*
       if(name == 'Estadisticas_Imp'){
         console.log('data>>>',data);
      
@@ -283,7 +414,7 @@ validations:{
       else{
           return;    
       }
-
+*/
       
     },
 
