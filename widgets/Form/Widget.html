@@ -3,43 +3,118 @@
   <div data-id="form">
        
       <form  @submit.prevent="submitForm">
-        <div >
-          <label> Titulo: </label> 
-          <input  v-model="form.titulo" placeholder="ingrese un titulo"  type="text" maxlength="20"/>
-          <p v-if="$v.form.titulo.$invalid" class="error-message"> *El titulo es requerido </p>
-        </div>
-       
-        <div >
-          <label>Descripcion:</label> 
-          <textarea  v-model="form.descripcion"  rows="4" placeholder="ingrese una descripcion"></textarea>
+
+        <section v-if="step==1">
+            <h3>Incidencia</h3>
+
+            <div>
+              <label>Unidad: </label> 
+              
+              <select  v-model="form.unidad" > 
+              
+                <option v-bind:value="item.value"  v-for="item in getOptions('unidad')"  >
+                    {{item.label}}
+                </option>
+              </select>
+              <p v-if="$v.form.unidad.$invalid" class="error-message"> *La unidad es requerida </p>
+            </div>
+           
+            <div >
+              <label>Tipo: </label> 
+              <select  v-model="form.tipo_inc" > 
+              
+                <option v-bind:value="item.value"  v-for="item in getOptions('tipo_inc')"  >
+                    {{item.label}}
+                </option>
+              </select>
+              
+              <p v-if="$v.form.tipo_inc.$invalid" class="error-message"> *Seleccione un tipo </p>
+              
+              
+            </div>
+           
+    
+    
+            <div >
+              <label>SubTipo: </label> 
+    
+              <select  v-model="form.sub_tipo_inc" > 
+              
+                <option v-bind:value="item.value"  v-for="item in getOptions('sub_tipo_inc')"  >
+                    {{item.label}}
+                </option>
+              </select>
+              
+              <p v-if="$v.form.sub_tipo_inc.$invalid" class="error-message"> *Seleccione un subtipo </p>
+              
+            </div>
           
-        </div>
-       
-        <div >
-          <label>Distritos:</label> 
-          <input  v-model="form.distritos" type="text" disabled/>
-          <p v-if="$v.form.distritos.$invalid" class="error-message"> *Los distritos son requeridos </p>
-        </div>
-      
+    
+            <div>
+              <label>Turno: </label> 
+              <select  v-model="form.turno" > 
+              
+                <option v-bind:value="item.value"  v-for="item in getOptions('turno')"  >
+                    {{item.label}}
+                </option>
+              </select>
+              <p v-if="$v.form.turno.$invalid" class="error-message"> *Seleccione un turno </p>
+    
+            </div>
+    
+            
+            <div>
+              <label>Zona: </label> 
+              <select  v-model="form.zona" > 
+              
+                <option v-bind:value="item.value"  v-for="item in getOptions('zona')"  >
+                    {{item.label}}
+                </option>
+              </select>
+              <p v-if="$v.form.zona.$invalid" class="error-message"> *Seleccione un turno </p>
+    
+            </div>
+
+
+        </section>
+        
+        <section v-if="step==2">
+            <h3>Información de Contacto</h3>
+            <div>
+              <label>Contacto: </label> 
+              <input  v-model="form.contacto" maxlength="50" type="text"/> 
+                
+              
+              <!--<p v-if="$v.form.contacto.$invalid" class="error-message"> *Escriba el contacto </p>-->
+    
+            </div>
+
+
+        </section>
+
+
+
+
+
+
     
         <div class="login-buttons"> 
-          <div  style='float: left;' ><button :disabled="$v.form.$invalid"> Guardar</button> </div>
+          
+          <div  style='float: left;' v-if="step!==1"><button @click.prevent="previousStep"> Atras</button> </div>   
+          
+          <div  style='float: left;' v-if="step!== totalsteps " ><button @click.prevent="nextStep"> Siguiente</button> </div>   
+          
+          <div  style='float: right;' v-if="step== totalsteps "><button :disabled="$v.form.$invalid"> Guardar</button> </div>
           
         </div>
+
+
+
+
+
   </form>
 
 
-<!--
-  <form autocomplete="off" class="form-group" id="login-form">
-    <label for="">Email</label>
-    <input type="email" id="login-email" class="form-control" required><br>
-    <label for="">Password</label><br>
-    <input type="password" id="login-password" class="form-control" required><br>
 
-    <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
-    <button id="register" class="btn btn-dark btn-block">Registrar</button>
-    <br>
-    <div class="container error" id="loginError"></div>
-</form>-->
   </div>
 </div>

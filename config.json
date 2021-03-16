@@ -38,8 +38,7 @@
         "version": "2.16",
         "id": "themes_LaunchpadTheme_widgets_AnchorBarController_Widget_20",
         "name": "AnchorBarController",
-        "icon": "themes/LaunchpadTheme/widgets/AnchorBarController/images/icon.png?wab_dv=2.18",
-        "config": null
+        "icon": "themes/LaunchpadTheme/widgets/AnchorBarController/images/icon.png?wab_dv=2.18"
       },
       {
         "uri": "themes/LaunchpadTheme/widgets/Header/Widget",
@@ -177,14 +176,15 @@
           "relativeTo": "map"
         },
         "placeholderIndex": 2,
-        "id": "widgets_FormHistorial_31",
+        "id": "widgets_Form_31",
         "version": "2.18",
+        
         "closeable": true,
-        "uri": "widgets/FormHistorial/Widget",
-        "icon": "widgets/FormHistorial/images/icon.png?wab_dv=2.18",
-        "name": "FormHistorial",
-        "label": "Guardar Datos",
-        "config": "configs/FormHistorial/config_widgets_FormHistorial_31.json",
+        "uri": "widgets/Form/Widget",
+        "icon": "widgets/Form/images/icon.png?wab_dv=2.18",
+        "name": "Form",
+        "label": "Formulario",
+        "config": "configs/Form/config_widgets_Form_31.json",
         "openAtStart": false
       },
       {
@@ -288,30 +288,13 @@
     },
     "widgets": [
       {
-        "uri": "widgets/Legend/Widget",
-        "version": "2.16",
-        "id": "widgets_Legend_Widget_18",
-        "name": "Legend",
-        "index": 2,
-        "icon": "widgets/Legend/images/icon.png?wab_dv=2.18"
-      },
-      {
-        "uri": "widgets/LayerList/Widget",
-        "version": "2.16",
-        "id": "widgets_LayerList_Widget_19",
-        "name": "LayerList",
-        "index": 3,
-        "icon": "widgets/LayerList/images/icon.png?wab_dv=2.18"
-      },
-      {
         "name": "Edit",
         "version": "2.18",
         "icon": "/widgets/Edit/images/icon.png?wab_dv=2.18",
         "uri": "widgets/Edit/Widget",
         "config": "configs/Edit/config_widgets_Edit_Widget_36.json",
-        "index": 4,
-        "id": "widgets_Edit_Widget_36",
-        "openAtStart": false
+        "index": 2,
+        "id": "widgets_Edit_Widget_36"
       },
       {
         "name": "Demo",
@@ -319,8 +302,9 @@
         "icon": "/widgets/Demo/images/icon.png?wab_dv=2.18",
         "uri": "widgets/Demo/Widget",
         "config": "configs/Demo/config_widgets_Demo_Widget_37.json",
-        "index": 6,
-        "id": "widgets_Demo_Widget_37"
+        "index": 3,
+        "id": "widgets_Demo_Widget_37",
+        "openAtStart": true
       }
     ],
     "groups": []

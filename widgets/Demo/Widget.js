@@ -20,16 +20,17 @@ define(['dojo/_base/declare', 'jimu/BaseWidget',
 'dojo/_base/html',
 "esri/toolbars/draw",
 "esri/graphic",
-"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color"
+"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color", 'jimu/MapManager',
 
 ],
-function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphic,SimpleMarkerSymbol,SimpleLineSymbol,Color) {
+function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphic,SimpleMarkerSymbol,SimpleLineSymbol,Color, MapManager,
+  ) {
   //To create a widget, you need to derive from BaseWidget.
   listfeatureLayers:null;
 
 
 
-  return declare([BaseWidget], {
+  return declare([BaseWidget,MapManager], {
     // DemoWidget code goes here
 
     //please note that this property is be set by the framework when widget is loaded.
@@ -55,7 +56,7 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
           this.map.addLayers( [l.featureLayer] );
       });
 
-      var drawToolbar = new Draw(this.map);
+      this.drawToolbar = new Draw(this.map);
 
 
       /*
@@ -91,9 +92,9 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
         */
 
 
-  
+       var _this = this;
 
-       var templateLayers =this.listfeatureLayers.map(l=>{return l.featureLayer});
+       var templateLayers =this.listfeatureLayers.map(l=>{return l.featureLayer;});
 
        /*console.log('templateLayers>>',templateLayers);*/
        var templatePicker = new TemplatePicker({
@@ -101,78 +102,116 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
          grouping: true,
          rows: "auto",
          columns: "auto",
-         style: "height: 100%; width: 900px;"
-       },html.create("div", {}, this.domNode));
+         style: "height: 100%; width: 100%;"
+       },
+       
+       html.create("div", {}, this.domNode)
+       
+       );
  
  
        templatePicker.startup();
 
        var selectedTemplate;
        templatePicker.on("selection-change", function() {
-          /*var selected = templatePicker.getSelected();*/
+          
           if( templatePicker.getSelected() ) {
             selectedTemplate = templatePicker.getSelected();
           }
           switch (selectedTemplate.featureLayer.geometryType) {
             case "esriGeometryPoint":
-              drawToolbar.activate(Draw.POINT);
+              _this.drawToolbar.activate(Draw.POINT);
               break;
             case "esriGeometryPolyline":
-              drawToolbar.activate(Draw.POLYLINE);
+              _this.drawToolbar.activate(Draw.POLYLINE);
               break;
             case "esriGeometryPolygon":
-              drawToolbar.activate(Draw.POLYGON);
+              _this.drawToolbar.activate(Draw.POLYGON);
               break;
           }
 
-
-
-
-          /*console.log(selected);*/
-
-          /*var infoDiv = dom.byId("info");
-          if (selected) {
-            infoDiv.innerHTML = selected.template.name;
-          } else {
-            infoDiv.innerHTML = "";
-          }*/
+          /*this.map.disableMapNavigation();*/
+          
         });
 
 
 
-       /*{
-          type: "simple-marker",
-          color: [226, 119, 40],  // Orange
-          outline: {
-              color: [255, 255, 255], // White
-              width: 1
-          }
-       };*/
+
+        var widgets = this.appConfig.getConfigElementsByName('Form');
 
 
-       const simpleMarkerSymbol =  new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,10,
+       const simpleMarkerSymbol =  new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,15,
         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-        new Color([0,255,0,1]), 1),
-        new Color([0,255,0,0.5]));
+        new Color([36,204,199,1]), 2),
+        new Color([36,204,199,0.2]));
 
-        drawToolbar.on("draw-end", function(evt) {
-          drawToolbar.deactivate();
+        
+        
+
+        this.drawToolbar.on("draw-end", function(evt) {
+          _this.map.graphics.clear();
+          /*_this.map.enableMapNavigation();*/
           var newGraphic = new Graphic(evt.geometry, simpleMarkerSymbol, null);
 
-          this.map.graphics.add(newGraphic);
+          _this.map.graphics.add(newGraphic);
 
-          /*selectedTemplate.featureLayer.applyEdits([newGraphic], null, null);*/
+            if(widgets.length>0){
+                var widgetId = widgets[0].id;
+        
+              _this.openWidgetById(widgetId).then((widget)=>{
+            
+            
+              });
+            }
+
+
+            templatePicker.clearSelection();
+            
+            _this.drawToolbar.deactivate();
         });
+
+
+
+
+
+       
+
+        
 
         
         
 
     },
 
+    popupInit : function(){
+      
+      this.popup = new Popup({
+        
+        content:'',
+        titleLabel:'Guardar',
+        buttons:[
+          {label:'Aceptar',
+            onClick: 
+            function () {
+             
+            }
+            
+            },
+          {label:'Cancelar',
+          },
+    
+        ],
+    
+      });
+
+    },
+
     initEditor : function(evt){
 
-      console.log('evt.layers>>>',evt.layers);
-      const templateLayers =evt.layers.map(l=>{return l.layer});
+
+
+      /*console.log('evt.layers>>>',evt.layers);*/
+      /*const templateLayers =evt.layers.map(l=>{return l.layer});*/
 
 
       /*const templateLayers =this.listfeatureLayers.map(l=>{return l.featureLayer});*/
@@ -184,6 +223,9 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
         return result.layer;
       });*/
 
+
+      /*
+
       console.log('templateLayers>>',templateLayers);
       
       var templatePicker = new TemplatePicker({
@@ -194,7 +236,7 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
       }, "templateDiv");
 
 
-      templatePicker.startup();
+      templatePicker.startup();*/
 
     },
 
