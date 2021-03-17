@@ -21,7 +21,8 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
 
     //please note that this property is be set by the framework when widget is loaded.
     //templateString: template,
-
+    feature:null,
+    graphic:null,
     baseClass: 'jimu-widget-demo',
 
     formOptions:[],
@@ -54,11 +55,13 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
               turno: null,             
               zona: null,
               distrito:null,
-              nivel_inc:null,
+              nivel_incidencia:null,
               fuente: null,
-              usuario: null,
               contacto:null,
-
+              telefeno:null,
+              cargo:null,
+              institucion:null,
+              usuario: null,
             },
            
         },
@@ -83,7 +86,8 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
         
           zona:{
             required:Validators.required
-          }
+          },
+
 
         }
         
@@ -102,7 +106,7 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
 
 
                 if(!widget.vue_app.$v.form.$invalid){
-                  widget.guardarConsulta(evt);
+                  widget.guardarData(evt);
                 }
               },
 
@@ -183,6 +187,26 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
     {
       label:'Tarde',value:'Tarde',attribute:'turno'
     },
+
+    {
+      label:'No pertinente',value:'No pertinente',attribute:'nivel_incidencia'
+    },
+    {
+      label:'Leve',value:'Leve',attribute:'nivel_incidencia'
+    },
+    {
+      label:'Grave',value:'Grave',attribute:'nivel_incidencia'
+    },
+    {
+      label:'Muy grave',value:'Muy grave',attribute:'nivel_incidencia'
+    },
+
+    {
+      label:'Twitter',value:'Twitter',attribute:'fuente'
+    },
+    {
+      label:'Whatsapp',value:'Whatsapp',attribute:'fuente'
+    },
     
   ]
 
@@ -192,70 +216,17 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
 
   },
   
-  guardarConsulta:function(evt){
-    /*
-    PanelManager.getInstance().closePanel(this.id+'_panel');
+  guardarData:function(evt){
 
-    this.vue_app.datoConsulta.fecha = Date();
+    console.log('this.vue_app.formZ>>>',this.vue_app.form);
 
-    const user = JSON.parse(localStorage.getItem('user'));
-
-*/
-
+    console.log(this.feature);
     
-   /* 
-    const db = firebase.firestore();
+    if(this.graphic && this.feature){
+      this.graphic.setAttributes(this.vue_app.form);
+      this.feature.applyEdits ( [this.graphic] );
 
-
-    db.collection('consultas').add({
-      uid: this.vue_app.datoConsulta.uid,
-      email: this.vue_app.datoConsulta.email,
-      fecha: this.vue_app.datoConsulta.fecha,
-      idfeatures: this.vue_app.datoConsulta.idfeatures,
-      geometry: this.vue_app.datoConsulta.geometry,
-      tableStatistics : this.vue_app.datoConsulta.tableStatistics,
-      chartStatisticResults : this.vue_app.datoConsulta.chartStatisticResults,
-      titulo : this.vue_app.form.titulo,
-      descripcion : (this.vue_app.form.descripcion)?this.vue_app.form.descripcion:'',
-      distritos : (this.vue_app.form.distritos)?this.vue_app.form.distritos:'',
-    });*/
-    
-
-    /*
-    const data = 
-    {
-      usuarioId:user.id,
-     
-      idFeatures: this.vue_app.datoConsulta.idFeatures,
-      geometry: this.vue_app.datoConsulta.geometry,
-      tableStatistics : this.vue_app.datoConsulta.tableStatistics,
-      chartStatisticResults : this.vue_app.datoConsulta.chartStatisticResults,
-      titulo : this.vue_app.form.titulo,
-      descripcion : (this.vue_app.form.descripcion)?this.vue_app.form.descripcion:'',
-      distritos : (this.vue_app.form.distritos)?this.vue_app.form.distritos:'',
-
-    };
-
-    this.data = data;
-
-    const widget  = this;
-    
-    this.saveConsultaService(widget);*/
-
-    /*
-
-    const widgets = this.appConfig.getConfigElementsByName('Historial');
-
-    if(widgets.length>0){
-      var widgetId = widgets[0].id;
-      
-      this.openWidgetById(widgetId).then((widget)=>{
-        this.publishData({mensaje:'actualizado'});
-      });
     }
-    
-    */
-
   },
 
 
@@ -352,7 +323,21 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
 
 
     onOpen: function(){
-     
+     this.vue_app.form={
+      unidad:null,
+      tipo_inc:null,
+      sub_tipo_inc:null,   
+      turno: null,             
+      zona: null,
+      distrito:null,
+      nivel_incidencia:null,
+      fuente: null,
+      contacto:null,
+      telefeno:null,
+      cargo:null,
+      institucion:null,
+      usuario: null,
+     };
 
     },
 
@@ -384,14 +369,24 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
     onReceiveData: function(name, widgetId, data, historyData) {
 
       if(name == 'Demo'){
-
-        console.log('data>>>',data);
-        /*console.log('data>>>',data);
-     
-        this.vue_app.datoConsulta =data;
-        this.vue_app.form.distritos = data.distritos;
-        this.vue_app.form.titulo = null;
-        this.vue_app.form.descripcion = null;*/
+        this.feature = data.feature;
+        this.graphic = data.graphic;
+        this.vue_app.form={
+          unidad:null,
+          tipo_inc:null,
+          sub_tipo_inc:null,   
+          turno: null,             
+          zona: null,
+          distrito:null,
+          nivel_incidencia:null,
+          fuente: null,
+          contacto:null,
+          telefeno:null,
+          cargo:null,
+          institucion:null,
+          usuario: null,
+         };
+       
 
       }
 

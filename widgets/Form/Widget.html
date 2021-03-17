@@ -75,7 +75,28 @@
     
             </div>
 
+            <div>
+              <label>Nivel Incidencia: </label> 
+              <select  v-model="form.nivel_incidencia" > 
+              
+                <option v-bind:value="item.value"  v-for="item in getOptions('nivel_incidencia')"  >
+                    {{item.label}}
+                </option>
+              </select>
+              
+            </div>
 
+            <div>
+              <label>Fuente: </label> 
+              <select  v-model="form.fuente" > 
+              
+                <option v-bind:value="item.value"  v-for="item in getOptions('fuente')"  >
+                    {{item.label}}
+                </option>
+              </select>
+              <!--<p v-if="$v.form.fuente.$invalid" class="error-message"> *Seleccione un turno </p>-->
+    
+            </div>
         </section>
         
         <section v-if="step==2">
@@ -85,10 +106,23 @@
               <input  v-model="form.contacto" maxlength="50" type="text"/> 
                 
               
-              <!--<p v-if="$v.form.contacto.$invalid" class="error-message"> *Escriba el contacto </p>-->
-    
             </div>
 
+
+            <div>
+              <label>Telefono: </label> 
+              <input  v-model="form.telefeno" maxlength="50" type="text"/> 
+            </div>
+
+            <div>
+              <label>Cargo: </label> 
+              <input  v-model="form.cargo" maxlength="50" type="text"/> 
+            </div>
+
+            <div>
+              <label>Institución: </label> 
+              <input  v-model="form.institucion" maxlength="50" type="text"/> 
+            </div>
 
         </section>
 

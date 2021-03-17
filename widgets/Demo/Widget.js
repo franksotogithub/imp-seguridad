@@ -20,10 +20,10 @@ define(['dojo/_base/declare', 'jimu/BaseWidget',
 'dojo/_base/html',
 "esri/toolbars/draw",
 "esri/graphic",
-"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color", 'jimu/MapManager',
+"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color", 'jimu/MapManager','esri/toolbars/edit',"dojo/_base/event",
 
 ],
-function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphic,SimpleMarkerSymbol,SimpleLineSymbol,Color, MapManager,
+function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphic,SimpleMarkerSymbol,SimpleLineSymbol,Color, MapManager,Edit,event
   ) {
   //To create a widget, you need to derive from BaseWidget.
   listfeatureLayers:null;
@@ -57,6 +57,8 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
       });
 
       this.drawToolbar = new Draw(this.map);
+
+     
 
 
       /*
@@ -150,7 +152,11 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
 
         this.drawToolbar.on("draw-end", function(evt) {
           _this.map.graphics.clear();
-          /*_this.map.enableMapNavigation();*/
+
+          /*if( templatePicker.getSelected() ) {
+            selectedTemplate = templatePicker.getSelected();
+          }*/
+          
           var newGraphic = new Graphic(evt.geometry, simpleMarkerSymbol, null);
 
           _this.map.graphics.add(newGraphic);
@@ -159,7 +165,9 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
                 var widgetId = widgets[0].id;
         
               _this.openWidgetById(widgetId).then((widget)=>{
-            
+                
+                _this.publishData({feature:selectedTemplate.featureLayer,graphic:newGraphic});
+
             
               });
             }
@@ -168,6 +176,10 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
             templatePicker.clearSelection();
             
             _this.drawToolbar.deactivate();
+
+            _this.createToolbar();
+
+
         });
 
 
@@ -182,6 +194,33 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
         
 
     },
+
+    createToolbar:function() {
+      const _this= this;
+
+      this.editToolbar = new Edit(this.map);
+      
+      
+      this.map.graphics.on("click", (evt)=> {
+        event.stop(evt);
+        _this.activateToolbar(evt.graphic,_this.editToolbar);
+      });
+      
+      //deactivate the toolbar when you click outside a graphic
+      this.map.on("click", (evt)=>{
+        _this.editToolbar.deactivate();
+
+      });
+    },
+
+
+    activateToolbar : function(graphic,editToolbar){
+      let tool=0;
+      tool = tool | Edit.MOVE; 
+      editToolbar.activate(tool, graphic);
+    }, 
+
+
 
     popupInit : function(){
       
