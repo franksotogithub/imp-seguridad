@@ -137,6 +137,7 @@
           <div  style='float: left;' v-if="step!== totalsteps " ><button @click.prevent="nextStep"> Siguiente</button> </div>   
           
           <div  style='float: right;' v-if="step== totalsteps "><button :disabled="$v.form.$invalid"> Guardar</button> </div>
+          <div  style='float: right;' ><button  @click.prevent="close" > Cancelar</button> </div>
           
         </div>
 

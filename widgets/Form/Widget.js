@@ -121,6 +121,11 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
               previousStep(){
 
                 this.step--;
+              },
+
+              close(){
+             
+                widget.close();
               }
 
           },
@@ -219,19 +224,27 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
   },
   
   close:function(){
+    /*this.publishData({'event':'close'});*/
+    this.publishData({'event':'close'});
     PanelManager.getInstance().closePanel(this.id+'_panel');
   },
 
 
   guardarData:function(evt){
-   
-    
+    this.publishData({'event':'guardar' , 'datos': JSON.stringify(this.vue_app.form) });
+    PanelManager.getInstance().closePanel(this.id+'_panel');
+    /*const  _this = this;
     if(this.graphic && this.feature){
       this.graphic.setAttributes(this.vue_app.form);
-      this.feature.applyEdits ( [this.graphic] );
-      this.publishData({'event':'close'});
-      this.close();
-    }
+      this.feature.applyEdits ( [this.graphic] ,null,null,function(res){
+        _this.close();
+
+      },function(err){
+
+      } );
+      
+      
+    }*/
   },
 
 
@@ -288,6 +301,7 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
     },
 
     onClose: function(){
+      this.publishData({'event':'close'});
       console.log('onClose');
     },
 
@@ -315,8 +329,8 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
     onReceiveData: function(name, widgetId, data, historyData) {
 
       if(name == 'Demo'){
-        this.feature = data.feature;
-        this.graphic = data.graphic;
+        /*this.feature = data.feature;
+        this.graphic = data.graphic;*/
         this.vue_app.form={
           unidad:null,
           tipo_inc:null,
@@ -332,7 +346,7 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
           institucion:null,
           usuario: null,
          };
-       
+         this.vue_app.step=1;
 
       }
 

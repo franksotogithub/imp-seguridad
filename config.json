@@ -119,7 +119,7 @@
         "icon": "widgets/MyLocation/images/icon.png?wab_dv=2.18"
       },
       {
-        "uri": "widgets/SmartEditor/Widget",
+        "uri": "",
         "version": "2.18",
         "position": {
           "right": 20,
@@ -129,9 +129,7 @@
         "closeable": true,
         "id": "widgets_AttributeTable_Widget_27",
         "placeholderIndex": 1,
-        "icon": "/widgets/SmartEditor/images/icon.png?wab_dv=2.18",
-        "name": "SmartEditor",
-        "config": "configs/SmartEditor/config_widgets_AttributeTable_Widget_27.json"
+        "icon": "/widgets/SmartEditor/images/icon.png?wab_dv=2.18"
       },
       {
         "uri": "widgets/Coordinate/Widget",
@@ -178,7 +176,6 @@
         "placeholderIndex": 2,
         "id": "widgets_Form_31",
         "version": "2.18",
-        
         "closeable": true,
         "uri": "widgets/Form/Widget",
         "icon": "widgets/Form/images/icon.png?wab_dv=2.18",
@@ -261,20 +258,20 @@
       "right": 0,
       "bottom": 0
     },
-    "itemId": "135fead4078a4a47a6417a1f19fbb00a",
+    "itemId": "d5e02a0c1f2b4ec399823fdd3c2fdebd",
     "mapOptions": {
       "extent": {
-        "xmin": -8611334.329998843,
-        "ymin": -1370492.966888665,
-        "xmax": -8548082.689092945,
-        "ymax": -1324210.3462620534,
+        "xmin": -8609895.480203053,
+        "ymin": -1372496.0484132157,
+        "xmax": -8549013.387173994,
+        "ymax": -1324034.9724804792,
         "spatialReference": {
           "wkid": 102100
         }
       }
     },
     "id": "map",
-    "portalUrl": "https://siu.imp.gob.pe/portal",
+    "portalUrl": "https://www.arcgis.com",
     "mapRefreshInterval": {
       "useWebMapRefreshInterval": true
     }
@@ -288,21 +285,12 @@
     },
     "widgets": [
       {
-        "name": "Edit",
-        "version": "2.18",
-        "icon": "/widgets/Edit/images/icon.png?wab_dv=2.18",
-        "uri": "widgets/Edit/Widget",
-        "config": "configs/Edit/config_widgets_Edit_Widget_36.json",
-        "index": 2,
-        "id": "widgets_Edit_Widget_36"
-      },
-      {
         "name": "Demo",
         "version": "2.18",
         "icon": "/widgets/Demo/images/icon.png?wab_dv=2.18",
         "uri": "widgets/Demo/Widget",
         "config": "configs/Demo/config_widgets_Demo_Widget_37.json",
-        "index": 3,
+        "index": 2,
         "id": "widgets_Demo_Widget_37",
         "openAtStart": true
       }

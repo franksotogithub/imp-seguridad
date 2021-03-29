@@ -20,14 +20,15 @@ define(['dojo/_base/declare', 'jimu/BaseWidget',
 'dojo/_base/html',
 "esri/toolbars/draw",
 "esri/graphic",
-"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color", 'jimu/MapManager','esri/toolbars/edit',"dojo/_base/event",
+"esri/symbols/SimpleMarkerSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color", 'jimu/MapManager','esri/toolbars/edit',"dojo/_base/event","esri/InfoTemplate",
 
 ],
-function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphic,SimpleMarkerSymbol,SimpleLineSymbol,Color, MapManager,Edit,event
+function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphic,SimpleMarkerSymbol,SimpleLineSymbol,Color, MapManager,Edit,event,InfoTemplate
   ) {
   //To create a widget, you need to derive from BaseWidget.
-  listfeatureLayers:null;
-
+  listfeatureLayers=[];
+  feature=null;
+  newGraphic=null;
 
 
   return declare([BaseWidget,MapManager], {
@@ -40,20 +41,25 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
 
     postCreate: function() {
       this.inherited(arguments);
+      var _this = this;
+
       
       console.log('this.config>>',this.config);
       this.listfeatureLayers  = this.config.listfeatureLayers;
+      var template = new InfoTemplate();
 
       this.listfeatureLayers.map((l)=>{
          l.featureLayer = new FeatureLayer(l.url,
           
           {
             mode: FeatureLayer.MODE_ONDEMAND,
-            outFields: ['*']
+            outFields: ['*'],
+            infoTemplate: template
           }
           );
 
           this.map.addLayers( [l.featureLayer] );
+
       });
 
       this.drawToolbar = new Draw(this.map);
@@ -94,8 +100,7 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
         */
 
 
-       var _this = this;
-
+    
        var templateLayers =this.listfeatureLayers.map(l=>{return l.featureLayer;});
 
        /*console.log('templateLayers>>',templateLayers);*/
@@ -151,22 +156,19 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
         
 
         this.drawToolbar.on("draw-end", function(evt) {
-          _this.map.graphics.clear();
+            _this.map.graphics.clear();
 
-     
-          
-          var newGraphic = new Graphic(evt.geometry, simpleMarkerSymbol, null);
+            _this.newGraphic = new Graphic(evt.geometry, simpleMarkerSymbol, null);
 
-          _this.map.graphics.add(newGraphic);
+            _this.map.graphics.add(_this.newGraphic);
 
             if(widgets.length>0){
                 var widgetId = widgets[0].id;
         
               _this.openWidgetById(widgetId).then((widget)=>{
-                
-                _this.publishData({feature:selectedTemplate.featureLayer,graphic:newGraphic});
-
-            
+                _this.feature=selectedTemplate.featureLayer;
+                _this.publishData({});
+              
               });
             }
 
@@ -277,14 +279,47 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
      /* this.vertexCount.innerHTML = 'The vertex count is: ' + count;*/
     },
 
-
+    sleep:function(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    },
     
-    onReceiveData: function(name, widgetId, data, historyData) {
-
+    onReceiveData:  function(name, widgetId, data, historyData) {
+      var _this= this;
       if(name == 'Form'){
         if(data.event=='close'){
           this.map.graphics.clear();
 
+        }
+        else if(data.event=='guardar'){
+
+          
+          const dataForm = JSON.parse(data.datos);
+  
+          if(this.newGraphic && this.feature){
+           
+            this.newGraphic.setAttributes(dataForm);
+            this.feature.applyEdits ( [this.newGraphic] ,null,null,async (res)=>{
+              await _this.sleep(1000);
+              const zoom = _this.map.getZoom();
+              const maxZoom = _this.map.getMaxZoom();
+              
+              if(zoom<maxZoom){
+                _this.map.centerAndZoom(_this.newGraphic.geometry, zoom + 1);
+              }
+              
+              else{
+                _this.map.centerAndZoom(_this.newGraphic.geometry, zoom -1);
+              }
+              _this.map.graphics.remove(_this.newGraphic);
+              
+            },(error)=>{
+              console.log(error);
+            } );
+           
+         
+          }
+
+        
         }
 
       }
