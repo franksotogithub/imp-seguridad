@@ -21,14 +21,14 @@
            
             <div >
               <label>Tipo: </label> 
-              <select  v-model="form.tipo_inc" > 
+              <select  v-model="form.tipo" > 
               
-                <option v-bind:value="item.value"  v-for="item in getOptions('tipo_inc')"  >
+                <option v-bind:value="item.value"  v-for="item in getOptions('tipo')"  >
                     {{item.label}}
                 </option>
               </select>
               
-              <p v-if="$v.form.tipo_inc.$invalid" class="error-message"> *Seleccione un tipo </p>
+              <p v-if="$v.form.tipo.$invalid" class="error-message"> *Seleccione un tipo </p>
               
               
             </div>
@@ -38,14 +38,14 @@
             <div >
               <label>SubTipo: </label> 
     
-              <select  v-model="form.sub_tipo_inc" > 
+              <select  v-model="form.subtipo" > 
               
-                <option v-bind:value="item.value"  v-for="item in getOptions('sub_tipo_inc')"  >
+                <option v-bind:value="item.value"  v-for="item in getOptions('subtipo')"  >
                     {{item.label}}
                 </option>
               </select>
               
-              <p v-if="$v.form.sub_tipo_inc.$invalid" class="error-message"> *Seleccione un subtipo </p>
+              <p v-if="$v.form.subtipo.$invalid" class="error-message"> *Seleccione un subtipo </p>
               
             </div>
           
@@ -104,14 +104,12 @@
             <div>
               <label>Contacto: </label> 
               <input  v-model="form.contacto" maxlength="50" type="text"/> 
-                
               
             </div>
 
-
             <div>
               <label>Telefono: </label> 
-              <input  v-model="form.telefeno" maxlength="50" type="text"/> 
+              <input  v-model="form.telefono" maxlength="50" type="text"/> 
             </div>
 
             <div>

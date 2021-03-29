@@ -132,7 +132,7 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
               break;
           }
 
-          /*this.map.disableMapNavigation();*/
+    
           
         });
 
@@ -153,9 +153,7 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
         this.drawToolbar.on("draw-end", function(evt) {
           _this.map.graphics.clear();
 
-          /*if( templatePicker.getSelected() ) {
-            selectedTemplate = templatePicker.getSelected();
-          }*/
+     
           
           var newGraphic = new Graphic(evt.geometry, simpleMarkerSymbol, null);
 
@@ -184,13 +182,6 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
 
 
 
-
-
-       
-
-        
-
-        
         
 
     },
@@ -206,7 +197,7 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
         _this.activateToolbar(evt.graphic,_this.editToolbar);
       });
       
-      //deactivate the toolbar when you click outside a graphic
+      
       this.map.on("click", (evt)=>{
         _this.editToolbar.deactivate();
 
@@ -249,34 +240,6 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
 
 
 
-      /*console.log('evt.layers>>>',evt.layers);*/
-      /*const templateLayers =evt.layers.map(l=>{return l.layer});*/
-
-
-      /*const templateLayers =this.listfeatureLayers.map(l=>{return l.featureLayer});*/
-
-
-      
-      /*
-      const templateLayers = arrayUtils.map(evt.layers, function(result){
-        return result.layer;
-      });*/
-
-
-      /*
-
-      console.log('templateLayers>>',templateLayers);
-      
-      var templatePicker = new TemplatePicker({
-        featureLayers: templateLayers,
-        grouping: false,
-        rows: "auto",
-        columns: 2
-      }, "templateDiv");
-
-
-      templatePicker.startup();*/
-
     },
 
     startup: function() {
@@ -312,6 +275,27 @@ function(declare, BaseWidget,Editor,TemplatePicker,FeatureLayer,html,Draw,Graphi
 
     showVertexCount: function(count){
      /* this.vertexCount.innerHTML = 'The vertex count is: ' + count;*/
-    }
+    },
+
+
+    
+    onReceiveData: function(name, widgetId, data, historyData) {
+
+      if(name == 'Form'){
+        if(data.event=='close'){
+          this.map.graphics.clear();
+
+        }
+
+      }
+
+      else{
+          return;    
+      }
+
+
+
+      
+    },
   });
 });

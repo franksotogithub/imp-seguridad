@@ -50,15 +50,15 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
             totalsteps:2,
             form:{
               unidad:null,
-              tipo_inc:null,
-              sub_tipo_inc:null,   
+              tipo:null,
+              subtipo:null,   
               turno: null,             
               zona: null,
               distrito:null,
               nivel_incidencia:null,
               fuente: null,
               contacto:null,
-              telefeno:null,
+              telefonos:null,
               cargo:null,
               institucion:null,
               usuario: null,
@@ -72,11 +72,11 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
             required:Validators.required
           },
         
-          tipo_inc:{
+          tipo:{
             required:Validators.required
           },
         
-          sub_tipo_inc:{
+          subtipo:{
             required:Validators.required
           },
         
@@ -141,7 +141,9 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
       });
   },
 
-  getOptions(attribute){
+  
+
+  getOptions:function(attribute){
 
   var options=[
     {
@@ -153,19 +155,19 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
     },
 
     {
-      label:'01 ACCIDENTES DE TRÁNSITO',value:'01 ACCIDENTES DE TRÁNSITO',attribute:'tipo_inc'
+      label:'01 ACCIDENTES DE TRÁNSITO',value:'01 ACCIDENTES DE TRÁNSITO',attribute:'tipo'
     },
 
     {
-      label:'02 HECHOS CONTRA EL PATRIMONIO',value:'02 HECHOS CONTRA EL PATRIMONIO',attribute:'tipo_inc'
+      label:'02 HECHOS CONTRA EL PATRIMONIO',value:'02 HECHOS CONTRA EL PATRIMONIO',attribute:'tipo'
     },
 
     {
-      label:'001 ATROPELLO',value:'A',attribute:'sub_tipo_inc'
+      label:'001 ATROPELLO',value:'A',attribute:'subtipo'
     },
 
     {
-      label:'002 CHOQUE',value:'002 CHOQUE',attribute:'sub_tipo_inc'
+      label:'002 CHOQUE',value:'002 CHOQUE',attribute:'subtipo'
     },
 
     {
@@ -216,77 +218,21 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
 
   },
   
+  close:function(){
+    PanelManager.getInstance().closePanel(this.id+'_panel');
+  },
+
+
   guardarData:function(evt){
-
-    console.log('this.vue_app.formZ>>>',this.vue_app.form);
-
-    console.log(this.feature);
+   
     
     if(this.graphic && this.feature){
       this.graphic.setAttributes(this.vue_app.form);
       this.feature.applyEdits ( [this.graphic] );
-
+      this.publishData({'event':'close'});
+      this.close();
     }
   },
-
-
-/*
-
-  saveConsultaService(widget){
-    const token  = localStorage.getItem('token');
-    fetch( `${apiUrlAuth}/historial` ,{
-      method: 'POST',
-    
-      headers:{
-        'Authorization': `Bearer ${token}` ,
-        "content-type": "application/json",
-       
-        },
-      
-        body:JSON.stringify(widget.data)
-     
-    }
-    ).then(async (res)=>{
-
-      const response=await res.json();
-
-      if(response){
-        if(response.status===200){
-          
-          console.log('response>>>',response);
-
-          const widgetsElement = widget.appConfig.getConfigElementsByName('Historial');
-          console.log('widgets>>',widgetsElement);
-          if(widgetsElement.length>0){
-            const widgetId = widgetsElement[0].id;
-
-            widget.openWidgetById(widgetId).then((e)=>{
-              
-              widget.publishData({mensaje:'actualizado'});
-
-            });
-          }
-          
-        }  
-        
-
-        else if(response.status===401){
-          refresToken(widget,widget.saveConsultaService,function(err){
-          });
-
-        }
-      }
-
-  }).catch(err => {
-
-      console.log('err>>>',err);
-  });
-
-
-  },
-*/
-
-
 
 
 
@@ -381,7 +327,7 @@ function(declare, BaseWidget,PanelManager,Vue,Vuelidate,Validators) {
           nivel_incidencia:null,
           fuente: null,
           contacto:null,
-          telefeno:null,
+          telefono:null,
           cargo:null,
           institucion:null,
           usuario: null,
